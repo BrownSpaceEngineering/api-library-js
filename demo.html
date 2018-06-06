@@ -1,0 +1,43 @@
+<html>
+    <head>
+        <script src="./HumanReadables.js"></script>
+        <script src="./EQUiSatAPI.js"></script>
+    </head>
+
+    <body>
+      See the console output.
+    </body>
+
+    <script>
+        console.log("API Demo");
+
+        getCurrentInfoData(["L2_SNS", "PANELREF"], 10, console.log, console.error);
+        getPreambleData(["num_errors", "MRAM_CPY"], 10, console.log, console.error);
+        getIdleData(["LION_1_CHARGED", "PROG_MEM_REWRITTEN"], 10, console.log, console.error);
+        getAttitudeData(["PD_FLASH", "PD_ACCESS"], 10, console.log, console.error);
+        getFlashBurstData(["LFB2SNS", "LED1TEMP", "LED2TEMP", "LED3TEMP", "LED4TEMP"], 10, console.log, console.error);
+        getFlashCompareData(["LFB2SNS", "LED1TEMP", "LED2TEMP", "LED3TEMP", "LED4TEMP"], 10, console.log, console.error);
+        getLowPowerData(["L2_SNS"], 10, console.log, console.error);
+        getErrorCodes(10, console.log, console.error);
+
+    </script>
+
+    <script>
+        console.log("Human Readables Demo");
+
+        console.log(signalToName("L1_SNS")); // LiOn #1 Current
+        // Ambient temperature at the sensor (in space, this only measures the temperature of the satellite itself)
+        console.log(signalToDescription("IR_FLASH_AMB"));
+
+        console.log(errorCodeToName(75)); // ECODE_UPLINK_REBOOT
+        // A battery charger's fault indicator turned on
+        console.log(errorCodeToDescription(56));
+        // RTOS stack overflow as detected, triggering satellite reboot
+        console.log(errorCodeNameToDescription("ECODE_STACK_OVERFLOW"));
+
+        console.log(errorLocToName(25)); // ELOC_LED1SNS
+        console.log(errorLocToDescription(37)); // LiOn #1 Voltage
+        console.log(errorLocNameToDescription("ELOC_ANTENNA_DEPLOY")); // Antenna Deployment
+
+    </script>
+</html>
