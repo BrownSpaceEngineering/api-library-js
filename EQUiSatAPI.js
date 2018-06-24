@@ -4,8 +4,8 @@
  * API details.
  */
 
-ENABLE_DUMMY_DATA = true
-API_ROUTE_PREFIX = "http://api.brownspace.org/equisat/"
+ENABLE_DUMMY_DATA = false;
+API_ROUTE_PREFIX = "http://18.191.97.146:8000/equisat/";
 
 /*********************************************************/
 // Direct API calls
@@ -35,43 +35,44 @@ API_ROUTE_PREFIX = "http://api.brownspace.org/equisat/"
 // Any signals that are NOT valid names (aren't in the database schema) will
 // have values of "undefined"
 /*********************************************************/
+var axios = require('axios');
 
 // These functions returns up to num rows containing the given signals,
 // sorted in order of their creation date.
 // If signals is empty or null, all signals will be returned.
-function getCurrentInfoData(signals, num, success, error) {
-    fetchRouteLatest("current-infos", signals, num, success, error);
+export function getCurrentInfoData(signals, num) {
+    return fetchRouteLatest("current-infos", signals, num);
 }
 
-function getPreambleData(signals, num, success, error) {
+function getPreambleData(signals, num) {
     //return fetchRouteLatest("/transmission", signals, num, success, error);
     // TODO
 }
 
-function getIdleData(signals, num, success, error) {
-    fetchRouteLatest("data/idle", signals, num, success, error);
+function getIdleData(signals, num) {
+    return fetchRouteLatest("data/idle", signals, num);
 }
 
-function getAttitudeData(signals, num, success, error) {
-    fetchRouteLatest("data/attitude", signals, num, success, error);
+function getAttitudeData(signals, num) {
+    return fetchRouteLatest("data/attitude", signals, num);
 }
 
-function getFlashBurstData(signals, num, success, error) {
-    fetchRouteLatest("data/flashBurst", signals, num, success, error);
+function getFlashBurstData(signals, num) {
+    return fetchRouteLatest("data/flashBurst", signals, num);
 }
 
-function getFlashCompareData(signals, num, success, error) {
-    fetchRouteLatest("data/flashComp", signals, num, success, error);
+function getFlashCompareData(signals, num) {
+    return fetchRouteLatest("data/flashComp", signals, num);
 }
 
-function getLowPowerData(signals, num, success, error) {
-    fetchRouteLatest("data/lowPower", signals, num, success, error);
+function getLowPowerData(signals, num) {
+    return fetchRouteLatest("data/lowPower", signals, num);
 }
 
 // Returns up to num rows of error codes (with all fields present),
 // sorted by creation date
-function getErrorCodes(num, success, error) {
-    fetchRouteLatest("error-codes", [], num, success, error); // all "signals"
+function getErrorCodes(num) {
+    fetchRouteLatest("error-codes", [], num); // all "signals"
 }
 
 /*********************************************************/
@@ -112,25 +113,39 @@ function getHistoricDataInPeriod(signals, startTime, endTime, success, error) {
 /*********************************************************/
 // API helpers
 /*********************************************************/
-function fetchRouteLatest(routeSuffix, signals, num, success, error) {
+function fetchRouteLatest (routeSuffix, signals, num) {
     if (ENABLE_DUMMY_DATA) {
-        success(getDummyData(signals, num));
+        return getDummyData(signals, num);        
     } else {
-        signalStr = signals.join(",")
+        signalStr = signals.join(",");
         query = { "limit": num, "fields": signalStr };
-        jqxhr = $.getJSON(API_ROUTE_PREFIX + routeSuffix + "/latest", query, success);
-        jqxhr.fail(error);
-    }
+        return axios({
+            url: API_ROUTE_PREFIX + routeSuffix + "/latest",
+            method: 'get',
+            data: query,
+            timeout: 5000,
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+    }    
 }
 
-function fetchRouteTimePeriod(routeSuffix, signals, startTime, endTime, success, error) {
+function fetchRouteTimePeriod (routeSuffix, signals, startTime, endTime) {
     if (ENABLE_DUMMY_DATA) {
-        success(getDummyData(signals, 10));
+        return getDummyData(signals, 10);
     } else {
-        signalStr = signals.join(",")
-        query = { "start_date": startTime, "end_date": endDate, "fields": signalStr };
-        jqxhr = $.getJSON(API_ROUTE_PREFIX + routeSuffix, query, success);
-        jqxhr.fail(error);
+        signalStr = signals.join(",");
+        query = { "start_date": startTime, "end_date": endTime, "fields": signalStr };
+        return axios({
+            url: API_ROUTE_PREFIX + routeSuffix,
+            method: 'get',
+            data: query,
+            timeout: 5000,
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
     }
 }
 
