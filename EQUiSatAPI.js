@@ -117,7 +117,7 @@ function fetchRouteLatest (routeSuffix, signals, num) {
     if (ENABLE_DUMMY_DATA) {
         return getDummyData(signals, num);        
     } else {
-        signalStr = signals.join(",");
+        signalStr = (signals != null) ? signals.join(",") : [];
         query = { "limit": num, "fields": signalStr };
         return axios({
             url: API_ROUTE_PREFIX + routeSuffix + "/latest",
@@ -135,7 +135,7 @@ function fetchRouteTimePeriod (routeSuffix, signals, startTime, endTime) {
     if (ENABLE_DUMMY_DATA) {
         return getDummyData(signals, 10);
     } else {
-        signalStr = signals.join(",");
+        signalStr = (signals != null) ? signals.join(",") : [];
         query = { "start_date": startTime, "end_date": endTime, "fields": signalStr };
         return axios({
             url: API_ROUTE_PREFIX + routeSuffix,
