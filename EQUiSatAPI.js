@@ -5,7 +5,7 @@
  */
 
 ENABLE_DUMMY_DATA = false;
-API_ROUTE_PREFIX = "http://18.191.97.146:8000/equisat/";
+API_ROUTE_PREFIX = "http://api.brownspace.org:8000/equisat/";
 
 /*********************************************************/
 // Direct API calls
