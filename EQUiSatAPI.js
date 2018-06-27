@@ -20,9 +20,9 @@ API_ROUTE_PREFIX = "http://api.brownspace.org:8000/equisat/";
 //      - error : a callback to be called if an error occurs, with a string error message
 //                as the only argument
 //      - num : (ONLY for quantity funcs) the maximum number of rows of data to return
-//      - startTime : (ONLY for time funcs) the javascript date to mark the start time of
+//      - startTime : (ONLY for time funcs) the javascript date (unix timestamp in milliseconds) to mark the start time of
 //                     returned data (based on database creation time)
-//      - endTime : (ONLY for time funcs) the javascript date to mark the end time of
+//      - endTime : (ONLY for time funcs) the javascript date (unix timestamp in milliseconds) to mark the end time of
 //                     returned data (based on database creation time)
 //
 // RETURN TYPES (passed to the success() callback):
@@ -44,45 +44,41 @@ export function getCurrentInfoData(signals, num) {
     return fetchRouteLatest("current-infos", signals, num);
 }
 
-function getPreambleData(signals, num) {
+export function getPreambleData(signals, num) {
     //return fetchRouteLatest("/transmission", signals, num, success, error);
     // TODO
 }
 
-function getIdleData(signals, num) {
+export function getIdleData(signals, num) {
     return fetchRouteLatest("data/idle", signals, num);
 }
 
-function getAttitudeData(signals, num) {
+export function getAttitudeData(signals, num) {
     return fetchRouteLatest("data/attitude", signals, num);
 }
 
-function getFlashBurstData(signals, num) {
+export function getFlashBurstData(signals, num) {
     return fetchRouteLatest("data/flashBurst", signals, num);
 }
 
-function getFlashCompareData(signals, num) {
+export function getFlashCompareData(signals, num) {
     return fetchRouteLatest("data/flashComp", signals, num);
 }
 
-function getLowPowerData(signals, num) {
+export function getLowPowerData(signals, num) {
     return fetchRouteLatest("data/lowPower", signals, num);
 }
 
 // Returns up to num rows of error codes (with all fields present),
 // sorted by creation date
-function getErrorCodes(num) {
+export function getErrorCodes(num) {
     fetchRouteLatest("error-codes", [], num); // all "signals"
 }
 
 /*********************************************************/
-// NOT IMPLEMENTED YET
-// "Universal" API routes that combine all datasets containing
-// a particular signal to provide all data points in a single call.
 //
-// RETURN TYPES (passed to the success() callback):
-// All calls of this type return (at the top level) an object,
-// which has the following fields:
+// RETURN TYPES:
+// All calls of this type return (at the top level) an object containing:
 //      - The desired signals as keys to a simple list of all
 //        that signal's values over time. All of these lists
 //        will be the same length across signal values.
@@ -95,19 +91,35 @@ function getErrorCodes(num) {
 //        will simply duplicate their most recent value for all
 //        extra timestamps necessary to correspond with the
 //        more frequent sensor. An example:
-//          timestamps:  [0,  1,  2,  3,  4,  5,  6,  7,  8]
-//          slow signal: [3,  3,  3,  3,  5,  5,  5,  5,  5]
-//          fast signal: [12, 14, 15, 14, 13, 16, 19, 20, 12]
+// Query:
+//      getSignalsInPeriod(["LF1REF", "LED3SNS"], 1529996366626, new Date().getTime())
+//       .then(function(result) {
+//          console.log(result.data);
+//        })
+//        .catch(function (error) {          
+//          console.log(error);
+//      });
+// 
+// Console Output:
+//          { LF1REF:
+//               { timestamps:
+//                [ 1529996366626,        
+//                  1529996366627 ],
+//               values: [ 3638, 3584 ] },
+//            LED3SNS:
+//             { timestamps:
+//                [ 1529996366638,
+//                  1529996366638 ],
+//               values: [ 200, 167 ] } 
+//          }
 //
-//      - ...
 /*********************************************************/
-function getHistoricData(signals, num, success, error) {
-
+export function getSignalsLatest(signals, num) {
+    return fetchRouteLatest("signals", signals, num);
 }
 
-
-function getHistoricDataInPeriod(signals, startTime, endTime, success, error) {
-
+export function getSignalsInPeriod(signals, startTime, endTime) {
+    return fetchRouteTimePeriod("signals", signals, startTime, endTime);
 }
 
 /*********************************************************/
@@ -116,8 +128,7 @@ function getHistoricDataInPeriod(signals, startTime, endTime, success, error) {
 function fetchRouteLatest (routeSuffix, signals, num) {
     if (ENABLE_DUMMY_DATA) {
         return getDummyData(signals, num);        
-    } else {
-        console.log("")
+    } else {        
         signalStr = (signals != null) ? signals.join(",") : [];
         query = { "limit": num, "fields": signalStr };
         return axios({
