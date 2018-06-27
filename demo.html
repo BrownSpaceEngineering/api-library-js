@@ -1,7 +1,8 @@
+<!DOCTYPE html>
 <html>
     <head>
         <script src="./HumanReadables.js"></script>
-        <script src="./EQUiSatAPI.js"></script>
+        <script src="./EQUiSatAPI.js" type="module"></script>
     </head>
 
     <body>
@@ -11,14 +12,88 @@
     <script>
         console.log("API Demo");
 
-        getCurrentInfoData(["L2_SNS", "PANELREF"], 10, console.log, console.error);
-        getPreambleData(["num_errors", "MRAM_CPY"], 10, console.log, console.error);
-        getIdleData(["LION_1_CHARGED", "PROG_MEM_REWRITTEN"], 10, console.log, console.error);
-        getAttitudeData(["PD_FLASH", "PD_ACCESS"], 10, console.log, console.error);
-        getFlashBurstData(["LFB2SNS", "LED1TEMP", "LED2TEMP", "LED3TEMP", "LED4TEMP"], 10, console.log, console.error);
-        getFlashCompareData(["LFB2SNS", "LED1TEMP", "LED2TEMP", "LED3TEMP", "LED4TEMP"], 10, console.log, console.error);
-        getLowPowerData(["L2_SNS"], 10, console.log, console.error);
-        getErrorCodes(10, console.log, console.error);
+        getSignalsInPeriod(["LF1REF", "LED3SNS"], 1529996366626, new Date().getTime())
+        .then(function(result) {
+            console.log("getSignalsInPeriod:");
+            console.log(result.data);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+
+        getSignalsLatest(["LF1REF", "LED3SNS"], 5)
+        .then(function(result) {
+            console.log("getSignalsLatest:");
+            console.log(result.data);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+
+        getCurrentInfoData(["L2_SNS", "PANELREF"], 10)
+        .then(function(result) {
+            console.log("getCurrentInfoData:");
+            console.log(result.data);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+        getPreambleData(["num_errors", "MRAM_CPY"], 10)
+        .then(function(result) {
+            console.log("getPreambleData:");
+            console.log(result.data);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+        getIdleData(["LION_1_CHARGED", "PROG_MEM_REWRITTEN"], 10)
+        .then(function(result) {
+            console.log("getIdleData:");
+            console.log(result.data);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+        getAttitudeData(["PD_FLASH", "PD_ACCESS"], 10)
+        .then(function(result) {
+            console.log("getAttitudeData:");
+            console.log(result.data);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+        getFlashBurstData(["LFB2SNS", "LED1TEMP", "LED2TEMP", "LED3TEMP", "LED4TEMP"], 10)
+        .then(function(result) {
+            console.log("getFlashBurstData:");
+            console.log(result.data);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+        getFlashCompareData(["LFB2SNS", "LED1TEMP", "LED2TEMP", "LED3TEMP", "LED4TEMP"], 10)
+        .then(function(result) {
+            console.log("getFlashCompareData:");
+            console.log(result.data);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+        getLowPowerData(["L2_SNS"], 10)
+        .then(function(result) {
+            console.log("getLowPowerData:");
+            console.log(result.data);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+        getErrorCodes(10)
+        .then(function(result) {
+            console.log("getErrorCodes:");
+            console.log(result.data);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
 
     </script>
 
