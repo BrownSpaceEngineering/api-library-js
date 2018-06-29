@@ -5,7 +5,7 @@
  */
 
 ENABLE_DUMMY_DATA = false;
-API_ROUTE_PREFIX = "http://api.brownspace.org:8000/equisat/";
+API_ROUTE_PREFIX = "http://api.brownspace.org/equisat/";
 
 /*********************************************************/
 // Direct API calls
@@ -90,7 +90,31 @@ export function getErrorCodes(num) {
 //        more frequently than another, the less frequent sensors
 //        will simply duplicate their most recent value for all
 //        extra timestamps necessary to correspond with the
-//        more frequent sensor. An example:
+//        more frequent sensor. 
+//
+// getSignalsLatest Example:
+//
+
+// Query: 
+//     getSignalsLatest(["LF1REF", "LED3SNS"], 3)
+//    .then(function(result) {
+//       console.log(result.data);
+//     })
+//     .catch(function (error) {          
+//       console.log(error);
+//   });
+
+// Console Output:
+// { LF1REF:
+//    { timestamps: [ 1528862181440, 1528862181440, 1528862181440 ],
+//      values: [ 3584, 3584, 3584 ] },
+//   LED3SNS:
+//    { timestamps: [ 1528862181440, 1528862181440, 1528862181440 ],
+//      values: [ 200, 200, 167 ] } }
+
+//
+// getSignalsInPeriod Example:
+//
 // Query:
 //      getSignalsInPeriod(["LF1REF", "LED3SNS"], 1529996366626, new Date().getTime())
 //       .then(function(result) {
