@@ -93,8 +93,6 @@ export function getErrorCodes(num) {
 //        more frequent sensor. 
 //
 // getSignalsLatest Example:
-//
-
 // Query: 
 //     getSignalsLatest(["LF1REF", "LED3SNS"], 3)
 //    .then(function(result) {
@@ -103,7 +101,7 @@ export function getErrorCodes(num) {
 //     .catch(function (error) {          
 //       console.log(error);
 //   });
-
+//
 // Console Output:
 // { LF1REF:
 //    { timestamps: [ 1528862181440, 1528862181440, 1528862181440 ],
@@ -111,10 +109,22 @@ export function getErrorCodes(num) {
 //   LED3SNS:
 //    { timestamps: [ 1528862181440, 1528862181440, 1528862181440 ],
 //      values: [ 200, 200, 167 ] } }
-
+//
+// getSignalsLatestSingle Example:
+// Query: 
+//     getSignalsLatestSingle(["LF1REF", "LED3SNS"])
+//    .then(function(result) {
+//       console.log(result.data);
+//     })
+//     .catch(function (error) {          
+//       console.log(error);
+//   });
+//
+// Console Output:
+//  { LF1REF: { timestamp: 1528862181440, value: 3584 },
+//   LED3SNS: { timestamp: 1528862181440, value: 200 } }
 //
 // getSignalsInPeriod Example:
-//
 // Query:
 //      getSignalsInPeriod(["LF1REF", "LED3SNS"], 1529996366626, new Date().getTime())
 //       .then(function(result) {
@@ -136,16 +146,21 @@ export function getErrorCodes(num) {
 //                  1529996366638 ],
 //               values: [ 200, 167 ] } 
 //          }
+
+
 //
 /*********************************************************/
 export function getSignalsLatest(signals, num) {
     return fetchRouteLatest("signals", signals, num);
 }
 
+export function getSignalsLatestSingle(signals) {
+    return fetchRouteLatestSingle("signals", signals);
+}
+
 export function getSignalsInPeriod(signals, startTime, endTime) {
     return fetchRouteTimePeriod("signals", signals, startTime, endTime);
 }
-
 /*********************************************************/
 // API helpers
 /*********************************************************/
@@ -183,6 +198,24 @@ function fetchRouteTimePeriod (routeSuffix, signals, startTime, endTime) {
             }
         });
     }
+}
+
+function fetchRouteLatestSingle (routeSuffix, signals) {
+    if (ENABLE_DUMMY_DATA) {
+        return getDummyData(signals, 1);
+    } else {        
+        signalStr = (signals != null) ? signals.join(",") : [];
+        query = { "fields": signalStr };
+        return axios({
+            url: API_ROUTE_PREFIX + routeSuffix + "/latest_single",
+            method: 'get',
+            params: query,
+            timeout: 5000,
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+    }    
 }
 
 function getDummyData(signals, num) {
