@@ -45,8 +45,7 @@ export function getCurrentInfoData(signals, num) {
 }
 
 export function getPreambleData(signals, num) {
-    //return fetchRouteLatest("/transmission", signals, num, success, error);
-    // TODO
+    return fetchRouteLatest("/transmissions", signals, num);
 }
 
 export function getIdleData(signals, num) {
