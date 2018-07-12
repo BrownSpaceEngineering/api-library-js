@@ -68,7 +68,7 @@ var signalNames = {
     "L2_SNS": "LiOn #2 Current",
     "L1_TEMP": "LiOn #1 Temperature",
     "L2_TEMP": "LiOn #2 Temperature",
-    "LTEMP_AVG": "Average Battery Temperature"
+    "LTEMP_AVG": "Average Battery Temperature",
     "PANELREF": "Solar Panel Voltage",
     "L_REF": "Active LiOn Voltage",
     "LF1REF": "LiFePo #1 Voltage",
