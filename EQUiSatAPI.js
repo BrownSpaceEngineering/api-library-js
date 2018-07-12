@@ -186,7 +186,7 @@ function fetchRouteTimePeriod (routeSuffix, signals, startTime, endTime) {
         return getDummyData(signals, 10);
     } else {
         signalStr = (signals != null) ? signals.join(",") : [];
-        query = { "start_time": startTime, "end_time": endTime, "fields": signalStr };
+        query = { "start_date": startTime, "end_date": endTime, "fields": signalStr };
         return axios({
             url: API_ROUTE_PREFIX + routeSuffix,
             method: 'get',
