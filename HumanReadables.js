@@ -215,7 +215,7 @@ var signalDescriptions = {
     "accelerometer1Z": "Z axis satellite acceleration in G",
     "gyroscopeX": "Rate of rotation of the satellite on X axis in deg/s",
     "gyroscopeY": "Rate of rotation of the satellite on Y axis in deg/s",
-    "gyroscopeZ": "Rate of rotation of the satellite on Z axis in deg/s"
+    "gyroscopeZ": "Rate of rotation of the satellite on Z axis in deg/s",
     "magnetometer1X": "X axis magnetic field magnitude measurements in Gauss",
     "magnetometer1Y": "Y axis magnetic field magnitude measurements in Gauss",
     "magnetometer1Z": "Z axis magnetic field magnitude measurements in Gauss",    
